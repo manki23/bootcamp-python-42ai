@@ -22,5 +22,5 @@ def text_analyzer(*args):
         print("ERROR")
     else:
         print("What is the text to analyse?")
-        text = input()
+        text = input(">> ")
         analyse_text(text)
