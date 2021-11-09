@@ -1,14 +1,17 @@
 import sys
 
+
 def str_is_nb(nb):
     if not nb.isnumeric() and not (nb[0] == "-" and nb[1:].isnumeric()):
         return False
     else:
         return True
 
+
 def print_usage():
     print("Usage: python operations.py <number1> <number2>")
     print("Example:\n\tpython operations.py 10 3")
+
 
 args = sys.argv[1:]
 if len(args) > 2:

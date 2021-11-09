@@ -1,50 +1,56 @@
 cookbook = {
-    'sandwich' : {
-        'ingredients' : ['ham', 'bread', 'cheese', 'tomatoes'],
-        'meal' : 'lunch',
-        'prep_time' : 10 #time in minutes
+    'sandwich': {
+        'ingredients': ['ham', 'bread', 'cheese', 'tomatoes'],
+        'meal': 'lunch',
+        'prep_time': 10  # time in minutes
     },
     'cake': {
-        'ingredients' : ['flour', 'sugar', 'eggs'],
-        'meal' : 'dessert',
-        'prep_time' : 60 #time in minutes
+        'ingredients': ['flour', 'sugar', 'eggs'],
+        'meal': 'dessert',
+        'prep_time': 60  # time in minutes
     },
     'salad': {
-        'ingredients' : ['avocado', 'arugula', 'tomatoes', 'spinach'],
-        'meal' : 'lunch',
-        'prep_time' : 15 #time in minutes
+        'ingredients': ['avocado', 'arugula', 'tomatoes', 'spinach'],
+        'meal': 'lunch',
+        'prep_time': 15  # time in minutes
     }
 }
 
-#1.
+# 1.
 # print(cookbook.keys()) # print dictionary keys
 # print(cookbook.values()) # print dictionary values
 # print(cookbook.items()) # print dictonary items
 
-#2.
+
+# 2.
 def print_recipe(name):
     print("Recipe for cake:")
     print("Ingredients list: {}".format(cookbook[name]['ingredients']))
     print("To be eaten for {}.".format(cookbook[name]['meal']))
     print("Takes {} minutes of cooking.".format(cookbook[name]['prep_time']))
-    print("\n------------------------------------------------------------------\n")
+    print("\n--------------------------------------------------------------\n")
 
-#3
+
+# 3.
 def del_recipe(name):
     del cookbook[name]
 
-#4
+
+# 4.
 def add_recipe(name, ingredients, meal, prep_time):
     cookbook[name] = {
-        'ingredients' : ingredients,
-        'meal' : meal,
-        'prep_time' : prep_time #time in minutes
+        'ingredients': ingredients,
+        'meal': meal,
+        'prep_time': prep_time  # time in minutes
     }
-#5
+
+
+# 5.
 def print_recipe_names():
     print("The recipies in the cookbook are:\n-", "\n- ".join(cookbook.keys()))
 
-#6
+
+# 6.
 def print_menu():
     print("Please select an option by typing the corresponding number:")
     print("1: Add a recipe")
@@ -53,14 +59,17 @@ def print_menu():
     print("4: Print the cookbook")
     print("5: Quit")
 
+
 def add_recipe_action():
     name = str(input("Enter recipe\'s name:\n>> "))
     n = int(input("Enter number of ingredients :\n>> "))
-    ingredients = list(map(str,input("Enter " + str(name) + "\'s list of ingredients:\n>> ").strip().split()))[:n]
+    input = input(f"Enter {str(name)}\'s list of ingredients:\n>> ")
+    ingredients = list(map(str, input.strip().split()))[:n]
     meal = str(input("Enter the type of meal:\n>> "))
     prep_time = int(input("Enter the preparation time in minutes:\n>> "))
     add_recipe(name, ingredients, meal, prep_time)
     print(name + "\'s recipe successfully added.\n")
+
 
 def del_recipe_action():
     print("Please enter the name of the recipe you wish to delete:")
@@ -68,23 +77,26 @@ def del_recipe_action():
     del_recipe(name)
     print(name + "\'s recipe successfully deleted.")
 
+
 def print_recipe_action():
     print("Please enter the recipe's name to get its details:")
     name = str(input(">> "))
     print()
     print_recipe(name)
 
+
 def print_cookbook_action():
-    print("-----------------------------COOKBOOK-----------------------------\n")
+    print("---------------------------COOKBOOK---------------------------\n")
     for elem in cookbook.keys():
         print_recipe(elem)
-    
+
 
 keep_going = True
 show_menu = True
 
 while keep_going:
-    if show_menu: print_menu()
+    if show_menu:
+        print_menu()
     choice = input(">> ")
     print()
     if choice == "1":
@@ -93,16 +105,17 @@ while keep_going:
     elif choice == "2":
         del_recipe_action()
         show_menu = True
-    elif ( choice == "3" ):
+    elif choice == "3":
         print_recipe_action()
         show_menu = True
-    elif ( choice == "4" ):
+    elif choice == "4":
         print_cookbook_action()
         show_menu = True
-    elif (choice == "5"):
+    elif choice == "5":
         print("Cookbook closed.")
         keep_going = False
     else:
-        print("This option does not exist, please type the corresponding number.")
+        print("This option does not exist, \
+            please type the corresponding number.")
         print("To exit, enter 5.")
         show_menu = False

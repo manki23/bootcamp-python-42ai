@@ -11,6 +11,6 @@ else:
     nb = int(args[1])
     result = []
     for elem in words:
-        if len(elem) > nb: result.append(elem)
-    
+        if len(elem) > nb:
+            result.append(elem)
     print(result)
