@@ -47,4 +47,5 @@ else:
     text = " ".join(args)
     for c in text:
         print(morse[c.upper()], end=" ")
-    print()
+    if len(text) > 0:
+        print()

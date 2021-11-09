@@ -5,4 +5,4 @@ languages = {
 }
 
 for key, value in languages.items():
-    print("{0} was created by {1}".format(key, value))
+    print(f"{key} was created by {value}")

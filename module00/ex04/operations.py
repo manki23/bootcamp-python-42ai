@@ -19,6 +19,9 @@ if len(args) > 2:
     print_usage()
 elif len(args) == 0:
     print_usage()
+elif len(args) == 1:
+    print("InputError: too few arguments\n")
+    print_usage()
 elif not str_is_nb(args[0]) or not str_is_nb(args[1]):
     print("InputError: only numbers\n")
     print_usage()

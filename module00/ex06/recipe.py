@@ -24,10 +24,13 @@ cookbook = {
 
 # 2.
 def print_recipe(name):
-    print("Recipe for cake:")
-    print("Ingredients list: {}".format(cookbook[name]['ingredients']))
-    print("To be eaten for {}.".format(cookbook[name]['meal']))
-    print("Takes {} minutes of cooking.".format(cookbook[name]['prep_time']))
+    if name in cookbook:
+        print(f"Recipe for {name}:")
+        print("Ingredients list: {}".format(cookbook[name]['ingredients']))
+        print("To be eaten for {}.".format(cookbook[name]['meal']))
+        print(f"Takes {cookbook[name]['prep_time']} minutes of cooking.")
+    else:
+        print(f"Recipe {name} doesn't exist in the cookbook.")
     print("\n--------------------------------------------------------------\n")
 
 
@@ -63,8 +66,10 @@ def print_menu():
 def add_recipe_action():
     name = str(input("Enter recipe\'s name:\n>> "))
     n = int(input("Enter number of ingredients :\n>> "))
-    input = input(f"Enter {str(name)}\'s list of ingredients:\n>> ")
-    ingredients = list(map(str, input.strip().split()))[:n]
+    print(f"Enter {str(name)}\'s list of ingredients:")
+    ingredients = []
+    for i in range(0, n):
+        ingredients.append(str(input(f"ingredient {i + 1} >> ")))
     meal = str(input("Enter the type of meal:\n>> "))
     prep_time = int(input("Enter the preparation time in minutes:\n>> "))
     add_recipe(name, ingredients, meal, prep_time)
@@ -74,8 +79,12 @@ def add_recipe_action():
 def del_recipe_action():
     print("Please enter the name of the recipe you wish to delete:")
     name = str(input(">> "))
-    del_recipe(name)
-    print(name + "\'s recipe successfully deleted.")
+    if name in cookbook:
+        del_recipe(name)
+        print(name + "\'s recipe successfully deleted.")
+    else:
+        print(f"Recipe {name} doesn't exist in the cookbook.")
+    print("\n--------------------------------------------------------------\n")
 
 
 def print_recipe_action():
@@ -89,6 +98,8 @@ def print_cookbook_action():
     print("---------------------------COOKBOOK---------------------------\n")
     for elem in cookbook.keys():
         print_recipe(elem)
+    if len(cookbook) == 0:
+        print("The cookbook is empty.\n")
 
 
 keep_going = True
@@ -115,7 +126,7 @@ while keep_going:
         print("Cookbook closed.")
         keep_going = False
     else:
-        print("This option does not exist, \
-            please type the corresponding number.")
+        print("This option does not exist, " +
+              "please type the corresponding number.")
         print("To exit, enter 5.")
         show_menu = False
