@@ -6,8 +6,6 @@ class Account(object):
         self.id = self.ID_COUNT
         self.name = name
         self.__dict__.update(kwargs)
-        if hasattr(self, 'value'):
-            self.value = 0
         Account.ID_COUNT += 1
 
     def transfer(self, amount):
@@ -48,18 +46,22 @@ class Bank(object):
         if self.check_transfer_arguments(origin, dest, amount):
             origin_account = self.get_account_in_bank(origin)
             dest_account = self.get_account_in_bank(dest)
-            print(f"Origin account: {origin_account.__dict__}")
-            print(f"Destination account: {dest_account.__dict__}")
             print(f"Attempting transfert...")
             if (
-                origin_account is None or dest_account is None or
+                not isinstance(origin_account, Account) or
+                not isinstance(dest_account, Account) or
                 self.check_corruption(origin_account) or
                 self.check_corruption(dest_account) or
                 origin_account.value < amount
             ):
-                if origin_account.value < amount:
+                if (
+                    isinstance(origin_account, Account) and
+                    origin_account.value < amount
+                ):
                     print(f"Not enough money in origin account to make this "
                           + "transfert: {origin_account.value} < {amount}")
+                else:
+                    print("Error: data corrupted, transfer canceled")
                 return False
             else:
                 origin_account.transfer(-amount)
@@ -80,11 +82,12 @@ class Bank(object):
         retry = 0
         while retry < 3 and self.is_corrupted(account):
             if any(attr.startswith('b') for attr in account.__dict__.keys()):
-                for key, value in account.__dict__:
+                dict_account_copy = dict(account.__dict__.items())
+                for (key, value) in dict_account_copy.items():
                     if key.startswith('b'):
                         print(f"Forbiden key found: [{key}], deleting it...")
-                        del account[key]
-                        print(f"Key {key} deleted")
+                        delattr(account, key)
+                        print(f"Key <{key}> deleted")
             account_keys = account.__dict__.keys()
             if not any(attr.startswith('zip') for attr in account_keys):
                 print("Error found: no attribute starting with <zip> found")
@@ -122,6 +125,9 @@ class Bank(object):
                 elif del_attr_name in ['id', 'name', 'value']:
                     print("InputError: you cannot delete attributes "
                           + "<id>, <name> and <value>")
+                else:
+                    delattr(account, del_attr_name)
+                    print(f"Attribute <{del_attr_name}> deleted")
             retry += 1
         if retry == 3 and self.is_corrupted(account):
             print(f"Failure: fix of account {account.__dict__} data failed.")
@@ -153,7 +159,7 @@ class Bank(object):
         if isinstance(account_name_or_id, str):
             name = account_name_or_id
             for elem in self.account:
-                if elem['name'] == name:
+                if elem.name == name:
                     return elem
         elif isinstance(account_name_or_id, int):
             id = account_name_or_id
