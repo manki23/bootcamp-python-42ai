@@ -77,8 +77,14 @@ class Bank(object):
             @account: int(id) or str(name) of the account
             @return True if success, False if an error occured
         """
-        print(f"Error: account {account.__dict__} is corrupted")
-        print("Trying to automatically fix it...")
+        bank_acc = self.get_account_in_bank(account)
+        if bank_acc is None:
+            print(f"InputError: account <{account}> not found.")
+            return
+        fix_account_data(bank_acc)
+
+    def fix_account_data(self, account):
+        print("Attempting to fix <{account}> bank account...")
         retry = 0
         while retry < 3 and self.is_corrupted(account):
             if any(attr.startswith('b') for attr in account.__dict__.keys()):
@@ -130,9 +136,11 @@ class Bank(object):
                     print(f"Attribute <{del_attr_name}> deleted")
             retry += 1
         if retry == 3 and self.is_corrupted(account):
-            print(f"Failure: fix of account {account.__dict__} data failed.")
+            print(f"Failure: fix of account <{account.name}> data failed.")
 
     def is_corrupted(self, account):
+        if not isinstance(account, Account):
+            return True
         account_keys = account.__dict__.keys()
         if (
             len(account.__dict__) % 2 == 0 or
@@ -147,7 +155,7 @@ class Bank(object):
 
     def check_corruption(self, account):
         if self.is_corrupted(account):
-            self.fix_account(account)
+            self.fix_account_data(account)
             if self.is_corrupted(account):
                 return True
             else:
