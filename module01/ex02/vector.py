@@ -1,6 +1,3 @@
-import sys
-
-
 class Vector:
     def is_column_vector(self, values):
         return (
@@ -24,9 +21,9 @@ class Vector:
         return (
             isinstance(values, tuple) and
             len(values) == 2 and
-            isinstance(value[0], int) and
-            isinstance(value[1], int) and
-            values[0] < value[1] and
+            isinstance(values[0], int) and
+            isinstance(values[1], int) and
+            values[0] < values[1] and
             values[0] > 0
         )
 
@@ -49,10 +46,10 @@ class Vector:
             self.values = values
         elif isinstance(values, int) and values > 0:
             self.shape = (values, 1)
-            self.values = [[float(elem)] for elem in range(0, values - 1)]
+            self.values = [[float(elem)] for elem in range(0, values)]
         elif self.is_tuple(values):
             self.shape = (values[1] - values[0], 1)
-            values_range = range(values[0], values[1] - 1)
+            values_range = range(values[0], values[1])
             self.values = [[float(elem)] for elem in values_range]
         else:
             print("InputError: ", end="")
@@ -192,12 +189,8 @@ class Vector:
 
     def T(self):
         if self.is_column_vector(self.values):
-            self.values = [x[0] for x in self.values]
-            self.shape = (self.shape[1], self.shape[0])
-            return self
+            return Vector([x[0] for x in self.values])
         elif self.is_row_vector(self.values):
-            self.values = [[x] for x in self.values]
-            self.shape = (self.shape[1], self.shape[0])
-            return self
+            return Vector([[x] for x in self.values])
         else:
             raise ValueError(f".T() failed, vector data corrupted")
