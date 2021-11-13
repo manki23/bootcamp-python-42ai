@@ -13,17 +13,20 @@ class Book:
     def check_input(self, name, recipes_list):
         should_exit = False
         if not isinstance(name, str) or len(name) < 1:
-            print("InputError: <name> must be a string (cannot be empty)")
+            print("InputError: <name> must be a string (cannot be empty)",
+                  file=sys.stderr)
             should_exit = True
         if not isinstance(recipes_list, dict):
-            print("InputError: <recipes_list> must be a dictionary")
+            print("InputError: <recipes_list> must be a dictionary",
+                  file=sys.stderr)
             should_exit = True
         meals = ['starter', 'lunch', 'dessert']
         if (
             isinstance(recipes_list, dict) and
             set(recipes_list.keys()) != set(meals)
         ):
-            print(f"InputError: recipes_list must have 3 keys: {meals}")
+            print(f"InputError: recipes_list must have 3 keys: {meals}",
+                  file=sys.stderr)
             should_exit = True
         elif (
             isinstance(recipes_list, dict) and
@@ -32,7 +35,7 @@ class Book:
             for key, value in recipes_list.items():
                 if not isinstance(value, list):
                     print(f"InputTypeError: <{key}> must contain "
-                          + "a list of recipe")
+                          + "a list of recipe", file=sys.stderr)
                     should_exit = True
         if should_exit:
             sys.exit()
@@ -47,7 +50,7 @@ class Book:
     def get_recipe_by_name(self, name):
         """Prints a recipe with the name and returns the instance"""
         if not isinstance(name, str) or len(name) < 1:
-            print("InputError: name must be a valid string")
+            print("InputError: name must be a valid string", file=sys.stderr)
         else:
             for rec_type, rec_list in self.recipes_list.items():
                 for elem in rec_list:
@@ -59,7 +62,8 @@ class Book:
         """Get all recipe names for a given recipe_type """
         meals = ['starter', 'lunch', 'dessert']
         if recipe_type not in meals:
-            print(f"InputError: recipe_type must be one of {meals}")
+            print(f"InputError: recipe_type must be one of {meals}",
+                  file=sys.stderr)
         else:
             recipes = self.recipes_list[recipe_type]
             rec_names = [elem.name for elem in recipes]
@@ -76,10 +80,12 @@ class Book:
             'recipe_type'
         ]
         if not isinstance(recipe, Recipe):
-            print(f"InputError: object {recipe} is not an instance of Recipe")
+            print(f"InputError: object {recipe} is not an instance of Recipe",
+                  file=sys.stderr)
         elif set(recipe.__dict__.keys()) != set(recipe_set):
             print(f"InputError: object recipe corrupted, "
-                  + "it should contain the following keys : {recipe_set}")
+                  + "it should contain the following keys : {recipe_set}",
+                  file=sys.stderr)
         else:
             recipe_type = recipe.__dict__['recipe_type']
             self.recipes_list[recipe_type].append(recipe)
