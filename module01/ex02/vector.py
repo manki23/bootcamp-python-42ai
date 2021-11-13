@@ -1,3 +1,6 @@
+import sys
+
+
 class Vector:
     def is_column_vector(self, values):
         return (
@@ -27,15 +30,16 @@ class Vector:
             values[0] > 0
         )
 
-    def print_usage(self):
-        print("Vector can be initialized with:")
-        print("-> a list of floats: Vector([0.0, 1.0, 2.0, 3.0]),")
-        print("-> a list of list of floats: Vector([[0.0], [1.0], [2.0],",
-              " [3.0]]),")
-        print("-> a size: Vector(3) -> the vector will have values = ",
-              "[[0.0], [1.0], [2.0]],")
-        print("-> a range: Vector((10,15)) -> the vector will have values",
-              " = [[10.0], [11.0], [12.0], [13.0], [14.0]]")
+    def get_usage(self):
+        txt = "Vector can be initialized with:\n"
+        txt += "-> a list of floats: Vector([0.0, 1.0, 2.0, 3.0]),\n"
+        txt += "-> a list of list of floats: Vector([[0.0], [1.0], [2.0],"
+        txt += " [3.0]]),\n"
+        txt += "-> a size: Vector(3) -> the vector will have values = "
+        txt += "[[0.0], [1.0], [2.0]],\n"
+        txt += "-> a range: Vector((10,15)) -> the vector will have values"
+        txt += " = [[10.0], [11.0], [12.0], [13.0], [14.0]]\n"
+        return txt
 
     def __init__(self, values):
         if self.is_column_vector(values):
@@ -52,9 +56,7 @@ class Vector:
             values_range = range(values[0], values[1])
             self.values = [[float(elem)] for elem in values_range]
         else:
-            print("InputError: ", end="")
-            self.print_usage()
-            sys.exit()
+            raise ValueError(self.get_usage())
 
     def check_row_vector(self, v1, v2, check_zero=False):
         return (
@@ -73,7 +75,7 @@ class Vector:
             self.is_column_vector(v1.values) and
             self.is_column_vector(v2.values) and
             len(v1.values) == len(v2.values) and
-            not (check_zero and any(y == 0 for y in v2.values))
+            not (check_zero and any(y[0] == 0 for y in v2.values))
         )
 
     def add(self, v1, v2):
@@ -134,10 +136,10 @@ class Vector:
     def __rtruediv__(self, other):
         if isinstance(other, float) or isinstance(other, int):
             raise ValueError("A scalar cannot be divided by a Vector")
-        elif self.check_column_vector(other.values, self.values, True):
+        elif self.check_column_vector(other, self, True):
             lst = [[x[0] / y[0]] for x, y in zip(other.values, self.values)]
             return Vector(lst)
-        elif self.check_row_vector(other, self.values, True):
+        elif self.check_row_vector(other, self, True):
             return Vector([x / y for y in zip(other.values, self.values)])
         else:
             raise ValueError("__rtruediv__ can only be used with "
