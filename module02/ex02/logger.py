@@ -3,18 +3,26 @@ from random import randint
 import os
 
 
-# ... definition of log decorator...
 def log(func):
     def wrapper(*args, **kwargs):
-        # do something before `sum`
+        start_time = time.time()
         result = func(*args, **kwargs)
-        # do something after `sum`
+        elapsed_time = time.time() - start_time
+        f = open('machine.log', 'a')
+        username = os.environ.get('USER')
+        elapsed_time_str = f"{elapsed_time:.3f} s"
+        if elapsed_time_str == "0.000 s":
+            elapsed_time_str = f"{elapsed_time*1000:.3f} ms"
+        f.write(f"({username})Running: {func.__name__}\t"
+                + "[ exec-time = {elapsed_time_str} ]\n")
+        f.close()
         return result
     return wrapper
 
 
 class CoffeeMachine():
     water_level = 100
+
     @log
     def start_machine(self):
         if self.water_level > 20:
