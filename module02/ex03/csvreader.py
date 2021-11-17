@@ -15,8 +15,8 @@ class CsvReader():
         self.skip_top = skip_top
         self.skip_bottom = skip_bottom
         self.line_length = 0
-        self.file_obj = open(filename, 'r')
         self.data = []
+        self.filename = filename
 
     def ft_read_line(self):
         line = self.file_obj.readline()
@@ -28,6 +28,12 @@ class CsvReader():
         return line
 
     def __enter__(self):
+        try:
+            self.file_obj = open(self.filename, 'r')
+            self.close_file = True
+        except FileNotFoundError:
+            self.close_file = False
+            return None
         line = self.ft_read_line()
         line_count = 0
         while line:
@@ -49,7 +55,8 @@ class CsvReader():
         return self
 
     def __exit__(self, type, value, traceback):
-        self.file_obj.close()
+        if self.close_file:
+            self.file_obj.close()
 
     def getdata(self):
         """ Retrieves the data/records from skip_top to skip bottom.
