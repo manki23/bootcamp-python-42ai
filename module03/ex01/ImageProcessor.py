@@ -42,6 +42,3 @@ class ImageProcessor:
             plt.imshow(array)
             plt.show()
         pass
-
-# img = ImageProcessor.load('../../assets/module03/ex01/42AI.png')
-# ImageProcessor.display(img)
