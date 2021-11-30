@@ -4,15 +4,15 @@ Mac OS:
 curl -LO "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh"
 sh Miniconda3-latest-MacOSX-x86_64.sh -p /goinfre/miniconda3
 cd miniconda3/bin
-./conda install -y "jupyter" "numpy" "pandas"
+./conda install -y "jupyter" "numpy" "pandas" matplotlib
 ```
 
 ```bash
 Linux :
 curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh -p /mnt/nfs/homes/manki/goinfre/miniconda3
 cd miniconda3/bin
-./conda install -y "jupyter" "numpy" "pandas"
+./conda install -y "jupyter" "numpy" "pandas" matplotlib
 ```
 
 ### To correct module01/ex05
