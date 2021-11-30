@@ -36,7 +36,7 @@ class ColorFilter:
             This function should not raise any Exception.
         """
         if isinstance(array, np.ndarray):
-            return np.dstack((np.zeros(array.shape)[..., 2:], array[..., 2:]))
+            return np.dstack((np.zeros(array.shape)[..., :2], array[..., 2:]))
         else:
             return None
 
@@ -75,7 +75,7 @@ class ColorFilter:
         if isinstance(array, np.ndarray):
             blue = ColorFilter.to_blue(array)
             green = ColorFilter.to_green(array)
-            return array[..., :3] - (blue + green)[..., :3]
+            return array[..., :3] - (blue[..., :3] + green[..., :3])
         else:
             return None
 
@@ -130,4 +130,29 @@ class ColorFilter:
         Raises:
             This function should not raise any Exception.
         """
-        pass
+        if (
+            isinstance(array, np.ndarray) and
+            (
+                (filter in ["mean", "m"] and len(kwargs) == 0) or
+                (
+                    filter in ["weight", "w"] and len(kwargs) == 1 and
+                    "weights" in kwargs.keys() and
+                    isinstance(kwargs['weights'], list) and
+                    len(kwargs['weights']) == 3 and
+                    all(isinstance(elem, float) for elem in kwargs['weights'])
+                    and sum(kwargs['weights']) == 1
+                )
+            )
+        ):
+            col_0 = array[:, :, 0]
+            col_1 = array[:, :, 1]
+            col_2 = array[:, :, 2]
+            if filter in ["mean", "m"]:
+                weight = [0.2125, 0.7154, 0.0721]
+            else:
+                weight = kwargs['weights']
+            col_3 = weight[0] * col_0 + weight[1] * col_1 + weight[2] * col_2
+
+            return np.dstack((col_0, col_1, col_2, col_3))
+        else:
+            return None
