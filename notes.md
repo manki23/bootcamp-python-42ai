@@ -2,7 +2,7 @@
 ``` bash
 Mac OS:
 curl -LO "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh"
-sh Miniconda3-latest-MacOSX-x86_64.sh -p /goinfre/miniconda3
+sh Miniconda3-latest-MacOSX-x86_64.sh -p /Volumes/Storage/goinfre/manki/miniconda3
 cd miniconda3/bin
 ./conda install -y "jupyter" "numpy" "pandas" matplotlib
 ```

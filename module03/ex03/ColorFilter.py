@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 
 
 class ColorFilter:
@@ -18,11 +19,7 @@ class ColorFilter:
             This function should not raise any Exception.
         """
         if isinstance(array, np.ndarray):
-            new_array = np.array(array)
-            for line in new_array:
-                for elem in line:
-                    print(elem)
-            pass
+            return 1 - array[..., :3]
         else:
             return None
 
@@ -38,7 +35,10 @@ class ColorFilter:
         Raises:
             This function should not raise any Exception.
         """
-        pass
+        if isinstance(array, np.ndarray):
+            return np.dstack((np.zeros(array.shape)[..., 2:], array[..., 2:]))
+        else:
+            return None
 
     @staticmethod
     def to_green(array):
@@ -52,7 +52,13 @@ class ColorFilter:
         Raises:
             This function should not raise any Exception.
         """
-        pass
+        if isinstance(array, np.ndarray):
+            array_deepcopy = copy.deepcopy(array)
+            array_deepcopy[..., :1] = array_deepcopy[..., :1] * 0
+            array_deepcopy[..., 2:3] = array_deepcopy[..., 2:3] * 0
+            return array_deepcopy
+        else:
+            return None
 
     @staticmethod
     def to_red(array):
@@ -66,7 +72,12 @@ class ColorFilter:
         Raises:
             This function should not raise any Exception.
         """
-        pass
+        if isinstance(array, np.ndarray):
+            blue = ColorFilter.to_blue(array)
+            green = ColorFilter.to_green(array)
+            return array[..., :3] - (blue + green)[..., :3]
+        else:
+            return None
 
     @staticmethod
     def to_celluloid(array):
@@ -85,7 +96,22 @@ class ColorFilter:
         Raises:
             This function should not raise any Exception.
         """
-        pass
+        if isinstance(array, np.ndarray):
+            darray = copy.deepcopy(array)
+            for color in range(0, 3):
+                color_min = darray[:, :, color].min()
+                color_max = darray[:, :, color].max()
+                c_inter = np.linspace(color_min, color_max, 5)
+
+                for i in range(0, 5):
+                    inter = darray[:, :, color] <= c_inter[i]
+                    if i > 0:
+                        inter = inter & (darray[:, :, color] > c_inter[i - 1])
+                    avg = np.average(darray[:, :, color][inter])
+                    darray[:, :, color][inter] = avg
+            return darray
+        else:
+            return None
 
     @staticmethod
     def to_grayscale(array, filter, **kwargs):
