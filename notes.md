@@ -15,6 +15,11 @@ cd miniconda3/bin
 ./conda install -y "jupyter" "numpy" "pandas" matplotlib
 ```
 
+### Dark mode on Linux 
+``` bash
+/usr/bin/gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+```
+
 ### To correct module01/ex05
 ``` python
 # dir(Account)
