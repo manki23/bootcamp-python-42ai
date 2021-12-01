@@ -5,7 +5,7 @@ cd ~/goinfre ;
 curl -LO "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh" ;
 echo "\n yes" | sh Miniconda3-latest-MacOSX-x86_64.sh -p /Volumes/Storage/goinfre/manki/miniconda3 ;
 cd miniconda3/bin ; ./conda init ; source ~/.zshrc ;
-./conda install -y "jupyter" "numpy" "pandas" matplotlib
+./conda install -y "jupyter" "numpy" "pandas" matplotlib pycodestyle
 ```
 
 ```bash
@@ -14,7 +14,7 @@ cd ~/goinfre ;
 curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh ;
 echo "\n yes" | bash Miniconda3-latest-Linux-x86_64.sh -p /mnt/nfs/homes/manki/goinfre/miniconda3 ;
 cd miniconda3/bin ; ./conda init ; source ~/.zshrc ;
-./conda install -y "jupyter" "numpy" "pandas" matplotlib
+./conda install -y "jupyter" "numpy" "pandas" matplotlib pycodestyle
 ```
 
 ### Dark mode on Linux 
