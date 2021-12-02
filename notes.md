@@ -5,7 +5,8 @@ cd ~/goinfre ;
 curl -LO "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh" ;
 echo "\n yes" | sh Miniconda3-latest-MacOSX-x86_64.sh -p /Volumes/Storage/goinfre/manki/miniconda3 ;
 cd miniconda3/bin ; ./conda init ; source ~/.zshrc ;
-./conda install -y "jupyter" "numpy" "pandas" matplotlib pycodestyle
+./conda install -y "jupyter" "numpy" "pandas" matplotlib pycodestyle scikit-learn ;
+./conda install -c conda-forge kneed
 ```
 
 ```bash
@@ -14,7 +15,8 @@ cd ~/goinfre ;
 curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh ;
 echo "\n yes" | bash Miniconda3-latest-Linux-x86_64.sh -p /mnt/nfs/homes/manki/goinfre/miniconda3 ;
 cd miniconda3/bin ; ./conda init ; source ~/.zshrc ;
-./conda install -y "jupyter" "numpy" "pandas" matplotlib pycodestyle
+./conda install -y "jupyter" "numpy" "pandas" matplotlib pycodestyle scikit-learn ;
+./conda install -c conda-forge kneed
 ```
 
 ### Dark mode on Linux 
@@ -48,3 +50,10 @@ print(bank1.transfer(1, 2, 10.0))
 # print(account1.__dict__)
 # print(len(account1.__dict__))
 ```
+
+## Useful links
+
+### module00/ex00 yield, generator, comprehensions
+https://realpython.com/introduction-to-python-generators/
+### module03/ex04 K-means
+https://realpython.com/k-means-clustering-python/
