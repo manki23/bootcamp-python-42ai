@@ -7,15 +7,16 @@ import matplotlib.pyplot as plt
 
 class KmeansClustering:
     def __init__(self, max_iter=20, ncentroid=4):
-        # ... parameters control...
-        self.ncentroid = ncentroid # number of centroids
-        self.max_iter = max_iter # number of max iterations to update the centroids
-        self.centroids = [] # values of the centroids
+        self.ncentroid = ncentroid
+        self.max_iter = max_iter
+        self.centroids = []
         self.kmeans = KMeans(n_clusters=self.ncentroid, max_iter=self.max_iter)
+
     def fit(self, X):
         """
         Run the K-means clustering algorithm.
-        For the location of the initial centroids, random pick ncentroids from the dataset.
+        For the location of the initial centroids, random pick ncentroids
+        from the dataset.
         Args:
             X: has to be an numpy.ndarray, a matrice of dimension m * n.
         Returns:
@@ -26,6 +27,7 @@ class KmeansClustering:
         if isinstance(X, np.ndarray):
             self.kmeans.fit(X)
             self.centroids.append(self.kmeans.cluster_centers_)
+
     def predict(self, X):
         """
         Predict from wich cluster each datapoint belongs to.
@@ -39,10 +41,12 @@ class KmeansClustering:
         if isinstance(X, np.ndarray):
             return self.kmeans.predict(X)
 
+
 def print_usage(msg: str):
     print(f"InputError: {msg}", file=sys.stderr)
     print("Usage: python Kmeans.py filepath='<PATH>' ncentroid=<positive ",
           "integer> max_iter=<positive integer>", file=sys.stderr)
+
 
 def check_arguments(**kwargs):
     return (
@@ -56,22 +60,39 @@ def check_arguments(**kwargs):
             int(kwargs['max_iter']) > 0 and int(kwargs['ncentroid']) > 0
         )
 
+
 def plt_show(data, kmc, labels):
     fig = plt.figure()
-    ax = fig.gca(projection='3d')
+    ax = fig.add_subplot(projection='3d')
     x = data[..., 1:2]
     y = data[..., 2:3]
     z = data[..., 3:4]
-    ax.scatter(x, y, z, label='Courbe', marker="o", c=labels.astype(float), edgecolor="k")
+    ax.scatter(
+        x,
+        y,
+        z,
+        label='Courbe',
+        marker="o",
+        c=labels.astype(float),
+        edgecolor="k"
+    )
     centroids_x = kmc.centroids[0][..., 0:1]
     centroids_y = kmc.centroids[0][..., 1:2]
     centroids_z = kmc.centroids[0][..., 2:3]
-    ax.scatter(centroids_x, centroids_y, centroids_z, label='Courbe', marker="x", c="#000")
+    ax.scatter(
+        centroids_x,
+        centroids_y,
+        centroids_z,
+        label='Courbe',
+        marker="x",
+        c="#000"
+    )
     ax.set_xlabel('X: height')
     ax.set_ylabel('Y: weight')
     ax.set_zlabel('Z: bone_density')
     plt.tight_layout()
     plt.show()
+
 
 def main():
     if all('=' in arg for arg in sys.argv[1:]):
@@ -80,20 +101,21 @@ def main():
             kwargs['max_iter'] = int(kwargs['max_iter'])
             kwargs['ncentroid'] = int(kwargs['ncentroid'])
             try:
-                data = np.genfromtxt(kwargs['filepath'], delimiter=',', skip_header=1)
+                data = np.genfromtxt(
+                    kwargs['filepath'], delimiter=',', skip_header=1
+                )
                 kmc = KmeansClustering(kwargs['max_iter'], kwargs['ncentroid'])
                 kmc.fit(data[..., 1:])
                 labels = kmc.predict(data[..., 1:])
-                print(kmc.centroids)
                 plt_show(data, kmc, labels)
             except Exception as e:
                 print(f"{e.__class__.__name__}:", e, file=sys.stderr)
                 sys.exit()
-            print(kwargs)
         else:
             print_usage("invalid arguments")
     else:
         print_usage("invalid arguments")
+
 
 if __name__ == '__main__':
     sys.exit(main())
