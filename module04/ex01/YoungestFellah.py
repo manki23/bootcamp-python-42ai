@@ -14,11 +14,7 @@ def youngestfellah(df, year):
     woman_age = float("NaN")
     if isinstance(df, pd.DataFrame) and isinstance(year, int):
         df = df[df['Year'] == year]
-        women = df[(df['Sex'] == 'F')]
-        woman = women.loc[:, ['Age']].min()
-        woman_age = woman['Age']
-        men = df[(df['Sex'] == 'M')]
-        man = men.loc[:, ['Age']].min()
-        man_age = man['Age']
+        woman_age = df[(df['Sex'] == 'F')].loc[:, ['Age']].min()['Age']
+        man_age =  df[(df['Sex'] == 'M')].loc[:, ['Age']].min()['Age']
 
-    return {'youngest_woman_age': woman_age, 'youngest_man_age': man_age}
+    return {'f': woman_age, 'm': man_age}
