@@ -35,6 +35,20 @@ print(bank1.transfer(1, 2, 10.0))
 # print(len(account1.__dict__))
 ```
 
+### module04
+Other solution for ex0 :
+``` python
+# data = self.df[self.df[categorical_var].notna()]
+# data = data.pivot(columns=categorical_var, values=numerical_var)
+# data.plot.hist(subplots=True)
+# plt.xlabel(numerical_var)
+self.df.hist(column=numerical_var, by=categorical_var)
+plt.show()
+...
+# self.df.boxplot(column=numerical_var, by=categorical_var)
+# plt.show()
+```
+
 ## Useful links
 
 ### module00/ex00 yield, generator, comprehensions
